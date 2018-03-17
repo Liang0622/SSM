@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vic.dao.EbookEntryMapper">
+
+    <!--查询所有图书条目-->
+    <select id="selectAllEntry" resultType="EbookEntry">
+        SELECT id,categoryId,title,summary,uploaduser,createdate FROM ebook_entry
+    </select>
+
+    <!--根据类别查询图书条目-->
+    <select id="selectEntryByCategoryId" resultType="EbookEntry" parameterType="int">
+        SELECT id,categoryId,title,summary,uploaduser,createdate FROM ebook_entry
+        WHERE categoryId=#{0}
+    </select>
+
+    <!--根据id查询某个条目-->
+    <select id="selectOneById" resultType="EbookEntry" parameterType="int">
+        SELECT id,categoryId,title,summary,uploaduser,createdate FROM ebook_entry
+        WHERE id=#{0}
+    </select>
+
+    <!--增加图书条目-->
+    <insert id="addEntry" parameterType="EbookEntry">
+        INSERT INTO ebook_entry(id,categoryId,title,summary,uploaduser,createdate)
+        VALUES (#{id},#{categoryId},#{title},#{summary},#{uploaduser},#{createdate})
+    </insert>
+
+    <!--删除图书条目-->
+    <delete id="delEntry" parameterType="int">
+        DELETE FROM ebook_entry WHERE id=#{0}
+    </delete>
+
+    <!--修改图书条目-->
+    <update id="updateEntry" parameterType="EbookEntry">
+        UPDATE ebook_entry
+        <set>
+            <if test="categoryId!=null and categoryId.length()>0">categoryId=#{categoryId},</if>
+            <if test="title!=null and title.length()>0">title=#{title},</if>
+            <if test="summary!=null and summary.length()>0">summary=#{summary},</if>
+            <if test="uploaduser!=null and uploaduser.length()>0">uploaduser=#{uploaduser},</if>
+            <if test="createdate!=null">createdate=#{createdate},</if>
+        </set>
+         WHERE id=#{id}
+    </update>
+</mapper>
